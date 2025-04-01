@@ -1,0 +1,14 @@
+<h1 class="edit-booking-title">Editing Booking</h1>
+
+<div class="edit-booking-container">
+  <%= render "form", booking: @booking %>
+</div>
+
+<br>
+
+<div class="edit-booking-links">
+  <%= link_to "Show this Booking", @booking, class: "edit-booking-link" %> |
+  <%= link_to "Back to Bookings", bookings_path, class: "edit-booking-link" %>
+</div>
+
+

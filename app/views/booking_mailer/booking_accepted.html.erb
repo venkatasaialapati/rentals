@@ -1,0 +1,16 @@
+<h2>Booking Accepted!</h2>
+<p>Hello <%= @user.first_name %>,</p>
+
+<p>We're happy to inform you that your booking for <strong><%= @booking.vehicle.name %></strong> has been accepted.</p>
+
+<p><strong>Booking Details:</strong></p>
+<ul>
+  <li>Vehicle: <%= @booking.vehicle.name %></li>
+  <li>Start Date: <%= @booking.start_date %></li>
+  <li>End Date: <%= @booking.end_date %></li>
+  <li>Pickup Location: <%= @booking.address %></li>
+</ul>
+
+<p>Thank you for choosing us! If you have any questions, feel free to contact our support.</p>
+
+<p>Best regards,<br>Your Rentals Team</p>

@@ -1,0 +1,51 @@
+<div class="payment-container" style="max-width: 600px; margin: 30px auto; padding: 20px; border-radius: 10px; background: #f9f9f9; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+  
+  <h2 style="text-align: center; color: #333;">Payment Details</h2>
+
+  <div class="payment-info" style="margin-bottom: 15px; padding: 10px; background: #fff; border-radius: 8px; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);">
+    <p style="margin: 5px 0; font-size: 16px;"><strong>Booking ID:</strong> <%= @booking.id %></p>
+    <p style="margin: 5px 0; font-size: 16px;"><strong>Total Amount:</strong> ₹<%= @booking.total_price %></p>
+  </div>
+
+  <%= form_with url: booking_payment_path(@booking), method: :post, html: { class: "payment-form" } do |f| %>
+
+    <div class="form-group" style="margin-bottom: 12px;">
+      <%= f.label :first_name, "First Name", style: "font-weight: bold; color: #555;" %>
+      <%= f.text_field :first_name, required: true, placeholder: "Enter First Name", style: "width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 6px; margin-top: 4px;" %>
+    </div>
+
+    <div class="form-group" style="margin-bottom: 12px;">
+      <%= f.label :last_name, "Last Name", style: "font-weight: bold; color: #555;" %>
+      <%= f.text_field :last_name, required: true, placeholder: "Enter Last Name", style: "width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 6px; margin-top: 4px;" %>
+    </div>
+
+    <div class="form-group" style="margin-bottom: 12px;">
+      <%= f.label :card_number, "Card Number", style: "font-weight: bold; color: #555;" %>
+      <%= f.text_field :card_number, placeholder: "4111 1111 1111 1111", required: true, style: "width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 6px; margin-top: 4px;" %>
+    </div>
+
+    <div class="form-row" style="display: flex; justify-content: space-between;">
+      <div class="form-group" style="width: 48%;">
+        <%= f.label :expiry_date, "Expiry (MM/YY)", style: "font-weight: bold; color: #555;" %>
+        <%= f.text_field :expiry_date, placeholder: "12/26", required: true, style: "width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 6px; margin-top: 4px;" %>
+      </div>
+
+      <div class="form-group" style="width: 48%;">
+        <%= f.label :cvv, "CVV", style: "font-weight: bold; color: #555;" %>
+        <%= f.text_field :cvv, placeholder: "123", required: true, style: "width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 6px; margin-top: 4px;" %>
+      </div>
+    </div>
+
+    <div class="form-group" style="margin-bottom: 12px;">
+      <%= f.label :amount, "Amount", style: "font-weight: bold; color: #555;" %>
+      <%= f.text_field :amount, value: @booking.total_price, readonly: true, style: "width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px; background: #f1f1f1; margin-top: 4px;" %>
+    </div>
+
+    <div class="submit-container" style="text-align: center; margin-top: 15px;">
+      <%= f.submit "Pay ₹#{@booking.total_price}", style: "background: #28a745; color: white; padding: 10px 15px; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; width: 100%;" %>
+    </div>
+
+  <% end %>
+
+</div>
+

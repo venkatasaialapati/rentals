@@ -1,0 +1,57 @@
+<div class="form-container">
+  <% if @vehicle.errors.any? %>
+    <div class="error-messages">
+      <h2><%= pluralize(@vehicle.errors.count, "error") %> prohibited this vehicle from being saved:</h2>
+      <ul>
+        <% @vehicle.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= form_with model: @vehicle, local: true, html: { multipart: true, class: "vehicle-form" } do |f| %>
+    <div class="form-group">
+      <%= f.label :name, "Vehicle Name" %>
+      <%= f.text_field :name, class: "form-control", placeholder: "Enter vehicle name" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :vehicle_type, "Vehicle Type" %>
+      <%= f.text_field :vehicle_type, class: "form-control", placeholder: "Car, Bus, Tempo, etc." %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :seating_capacity, "Seating Capacity" %>
+      <%= f.number_field :seating_capacity, class: "form-control", placeholder: "Number of seats" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :price, "Price" %>
+      <%= f.number_field :price, class: "form-control", placeholder: "Price per day" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :location, "Vehicle Location" %>
+      <%= f.select :location, ["Hyderabad", "Bangalore", "Mumbai", "Chennai"], { prompt: "Select a location" }, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :image, "Vehicle Image" %>
+      <%= f.file_field :image, class: "form-control-file", direct_upload: true %>
+    </div>
+
+    <% if @vehicle.image.attached? %>
+      <div class="vehicle-image-preview">
+        <p>Current Image:</p>
+        <%= image_tag @vehicle.image, class: "preview-img" %>
+      </div>
+    <% end %>
+
+    <div class="form-group">
+      <%= f.submit @vehicle.new_record? ? "Create Vehicle" : "Update", class: "btn btn-primary" %>
+    </div>
+  <% end %>
+
+  <a href="<%= vehicles_path %>" class="back-link">Back to vehicles</a>
+</div>

@@ -1,0 +1,54 @@
+<p class="notice"><%= notice %></p>
+
+<% if user_signed_in? && current_user.admin? %>
+  <li><%= link_to "Add New Vehicle", new_vehicle_path, class: "custom-add-vehicle-btn", style: "color: red;" %></li>
+<% end %>
+
+
+<!-- Vehicle List -->
+<div class="scrollable-container">
+  <div class="vehicle-container">
+    <% @vehicles.each do |vehicle| %>
+      <div class="vehicle-card" data-vehicle-id="<%= vehicle.id %>">
+        
+        <div class="vehicle-image-container">
+          <% if vehicle.image.attached? %>
+            <%= image_tag vehicle.image, class: "vehicle-image" %>
+          <% end %>
+
+          <% unless vehicle.available %>
+            <div class="overlay">
+              <span class="not-available-text">Not Available</span>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="vehicle-info">
+          <h2 class="vehicle-name"><%= vehicle.name %></h2>
+          <p><strong>Vehicle:</strong> <%= vehicle.vehicle_type %></p>
+          <p><strong>Seating:</strong> <%= vehicle.seating_capacity %> people</p>
+          <p><strong>Location:</strong> <%= vehicle.location %></p> 
+          <p class="price">₹<%= vehicle.price %>/day</p>
+
+          <div class="button-container">
+            <% if user_signed_in? && !current_user.admin? %>
+              <%= link_to "Book Vehicle", vehicle.available ? vehicle_path(vehicle) : "#", class: "btn btn-primary book-btn #{'disabled' unless vehicle.available}" %>
+            <% elsif !user_signed_in? %>
+              <%= link_to "Book Vehicle", vehicle.available ? new_user_session_path : "#", class: "btn btn-success book-btn #{'disabled' unless vehicle.available}" %>
+            <% end %>
+
+            <% if current_user&.admin? %>
+              <div class="vehicle-actions">
+                <%= button_to (vehicle.available ? "Disable" : "Enable"), toggle_availability_vehicle_path(vehicle), method: :patch, class: "btn btn1-warning action-btn" %>
+                <%= link_to "Edit", edit_vehicle_path(vehicle), class: "btn btn1-secondary action-btn" %>
+                <%= button_to "Delete", vehicle_path(vehicle), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn1-danger action-btn" %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+

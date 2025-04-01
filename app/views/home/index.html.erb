@@ -1,0 +1,131 @@
+<section class="hero">
+  <div class="overlay"></div>
+  <h1 class="title">LUXURY ON WHEELS</h1>
+  <p class="subtitle">Drive Your Dream Vehicle Today...</p>
+
+  <div class="vehicle-carousel">
+    <div class="vehicle-slider">
+   
+      <img src="<%= asset_path 'download (8).jpeg' %>" alt="Luxury Car">
+      <img src="<%= asset_path 'download (19).jpeg' %>" alt="SUV">
+      <img src="<%= asset_path 'download (22).jpeg' %>" alt="Sports Car">
+      <img src="<%= asset_path 'download (12).jpeg' %>" alt="Electric Car">
+      <img src="<%= asset_path 'download (4).jpeg' %>" alt="Convertible">
+      <img src="<%= asset_path 'download (5).jpeg' %>" alt="Classic Car">
+
+    </div>
+  </div>
+  <a href="/vehicles" class="cta-button">See More</a> <br>
+ 
+</section>
+
+<%= render 'shared/footer' %>
+
+
+<style>
+
+/* Make the entire page scrollable */
+body {
+  overflow-y: auto;
+  background: linear-gradient(to right, #000000cc, #333333cc), 
+    background: url('/assets/car_image.jpg') no-repeat center center;
+  background-size: cover;
+  color: white;
+  margin: 0;
+  padding: 0;
+}
+
+/* Hero Section */
+.hero {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;  /* Allow content to expand instead of fixed height */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 50px 20px;
+}
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  .title {
+    font-size: 3rem;
+    color: white;
+    text-transform: uppercase;
+    z-index: 2;
+    animation: fadeIn 1.5s ease-in-out;
+
+  }
+
+  .subtitle {
+    font-size: 1.5rem;
+    color: #f1f1f1;
+    margin-bottom: 150px;
+    z-index: 2;
+  }
+
+  /* Vehicle Carousel */
+  .vehicle-carousel {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 20px;
+    
+  }
+
+  .vehicle-slider {
+    display: flex;
+    gap: 30px;
+    animation: scrollVehicles 10s linear infinite;
+  }
+
+  .vehicle-slider img {
+    width: 500px;
+    height: 500px;
+    height: auto;
+    border-radius: 10px;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .vehicle-slider img:hover {
+    transform: scale(1.4);
+  }
+
+  /* Button */
+  .cta-button {
+    display: inline-block;
+    padding: 12px 24px;
+    font-size: 1.2rem;
+    color: white;
+    background: red;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: 0.3s;
+    z-index: 2;
+  }
+
+  .cta-button:hover {
+    background: darkred;
+  }
+
+  /* Animations */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes scrollVehicles {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
+  }
+</style>
+
+

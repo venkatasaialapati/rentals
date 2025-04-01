@@ -1,0 +1,44 @@
+<div class="scrollable-container">
+  <%= render "form", vehicle: @vehicle %>
+  <br>
+  <div>
+    <%= link_to "Show this vehicle", @vehicle %> |
+    <%= link_to "Back to vehicles", vehicles_path %>
+  </div>
+</div>
+
+<style>
+/* Apply scrollable styles */
+.scrollable-container {
+  max-height: 80vh; /* Adjust height as needed */
+  overflow-y: auto; /* Enables vertical scrolling */
+  padding: 20px;
+  border: 1px solid #ddd; /* Light border for styling */
+  border-radius: 10px; /* Rounded edges */
+  background-color: pink; /* Light background */
+}
+
+/* Ensure form is contained properly */
+.scrollable-container .form-container {
+  max-width: 600px; /* Adjust form width */
+  margin: auto;
+}
+
+/* Style for links */
+.scrollable-container div {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.scrollable-container a {
+  text-decoration: none;
+  color: #007bff;
+  font-weight: bold;
+  margin: 10px;
+}
+
+.scrollable-container a:hover {
+  text-decoration: underline;
+}
+
+</style>

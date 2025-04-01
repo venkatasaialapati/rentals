@@ -1,0 +1,212 @@
+<div class="booking-page-container">
+  <p class="notification-message"><%= notice %></p>
+
+  <% if current_user.admin? %>
+    <button id="toggleMapBtn" class="btn btn-primary">View Map</button>
+    <div id="admin-map-wrapper">
+      <div id="adminMap"></div>
+    </div>
+  <% end %>
+
+  <% if @bookings.any? %>
+    <p class="total-bookings"><strong>Total Bookings:</strong> <%= @bookings.count %></p>
+
+    <div class="bookings-list">
+      <% @bookings.each_with_index do |booking, index| %>
+        <div class="booking-card">
+          <h3>Booking #<%= index + 1 %></h3>
+
+          <%= render booking %>
+
+          <% if booking.proof_document.attached? %>
+            <p><strong>Proof Document:</strong> 
+              <%= link_to "View Document", url_for(booking.proof_document), target: "_blank", class: "proof-link" %>
+            </p>
+          <% else %>
+            <p class="no-proof"><strong>No Proof Uploaded</strong></p>
+          <% end %>
+
+          <p class="booking-address"><strong>Address:</strong> <%= booking.address %></p>
+
+          <div class="booking-actions">
+            <% if current_user == booking.user && booking.status == "paid" %>
+              <%= button_to "Cancel Booking", booking_path(booking), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger btn-sm" %>
+            <% end %>
+
+           <% if current_user.admin? %>
+  <div class="booking-actions">
+    <% unless booking.status == "confirmed" %>
+      <%= button_to "Confirm", accept_booking_path(booking), method: :patch, class: "btn btn-success btn-sm", data: { confirm: "Accept this booking?" } %>
+      <%= button_to "Reject", reject_booking_path(booking), method: :patch, class: "btn btn-danger btn-sm", data: { confirm: "Reject this booking?" } %>
+    <% else %>
+      <button class="btn btn-danger btn-sm" disabled>Rejected</button> <!-- Disabled after confirmation -->
+    <% end %>
+
+    <%= button_to "Delete", booking_path(booking), method: :delete, class: "btn btn-dark btn-sm", data: { confirm: "Are you sure?" } %>
+  </div>
+<% end %>
+
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="no-bookings"><strong>No bookings yet.</strong></p>
+  <% end %>
+
+  <% if current_user && !current_user.admin? %>
+    <div class="book-more-container">
+      <%= link_to "Book Vehicle", vehicles_path, class: "btn btn-success book-more-btn" %>
+    </div>
+  <% end %>
+  <%= render 'shared/footer' %>
+
+</div>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var mapContainer = document.getElementById("admin-map-wrapper");
+    var mapButton = document.getElementById("toggleMapBtn");
+    var mapInstance = null;
+
+    mapButton.addEventListener("click", function () {
+      if (mapContainer.style.display === "none" || mapContainer.style.display === "") {
+        mapContainer.style.display = "block";
+
+        if (!mapInstance) {
+          mapInstance = L.map("adminMap").setView([20.5937, 78.9629], 5);
+
+          L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            attribution: "&copy; OpenStreetMap contributors",
+          }).addTo(mapInstance);
+
+          fetch("<%= bookings_path(format: :json) %>")
+            .then(response => response.json())
+            .then(data => {
+              data.forEach(booking => {
+                if (booking.latitude && booking.longitude) {
+                  var marker = L.marker([booking.latitude, booking.longitude]).addTo(mapInstance);
+                  marker.bindPopup(`<strong>User:</strong> ${booking.user_email}<br>
+                                    <strong>Address:</strong> ${booking.address}<br>
+                                    <strong>Status:</strong> ${booking.status}`);
+                }
+              });
+            })
+            .catch(error => console.error("Error fetching bookings:", error));
+        }
+      } else {
+        mapContainer.style.display = "none";
+      }
+    });
+  });
+</script>
+
+<style>
+/* General Page Styling */
+.booking-page-container {
+  margin: 20px auto;
+  padding: 20px;
+  background: #033848;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  max-height: 90vh; /* Scrollable Page */
+}
+
+/* Notifications */
+.notification-message {
+  background: #fffae6;
+  padding: 10px;
+  border-left: 4px solid #ffcc00;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* Admin Map Section */
+#toggleMapBtn {
+  display: block;
+  margin: 15px auto;
+}
+
+#admin-map-wrapper {
+  display: none;
+  margin-top: 10px;
+}
+
+#adminMap {
+  height: 500px;
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Booking List */
+.bookings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Individual Booking Card */
+.booking-card {
+  background: black;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+  transition: 0.3s;
+}
+
+.booking-card:hover {
+  transform: scale(1.02);
+}
+
+/* Proof Document */
+.proof-link {
+  color: black;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.no-proof {
+  color: #ff4d4d;
+  font-style: italic;
+}
+
+/* Booking Address */
+.booking-address {
+  font-size: 14px;
+  color: white;
+}
+
+/* Booking Actions */
+.booking-actions {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.booking-actions .btn {
+  padding: 8px 12px;
+  font-size: 14px;
+}
+
+/* No Bookings Message */
+.no-bookings {
+  text-align: center;
+  font-size: 16px;
+  color: #888;
+}
+
+/* Book More Button */
+.book-more-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.book-more-btn {
+  padding: 10px 20px;
+  font-size: 16px;
+}
+
+</style>

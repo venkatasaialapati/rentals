@@ -1,0 +1,122 @@
+<head>
+  <title>Rentals App</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+
+  <%= stylesheet_link_tag "application", media: "all" %>
+  <%= javascript_include_tag "application", type: "module" %>
+
+  <!-- Leaflet.js for Maps -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <%= javascript_importmap_tags %>
+</head>
+
+<body>
+<div id="notifications"></div>
+<header class="navbar">
+<nav class="nav-container">
+<h1 class="rentals-logo">
+    <img src="<%= asset_path('image1.jpeg') %>" alt="icon" width="70"  height="45" border="1"> Rentals
+</h1>
+  <!-- Navigation Links -->
+  <ul class="nav-links">
+    <li><%= link_to "Home", root_path %></li>
+    <li><%= link_to "Vehicles", vehicles_path %></li>
+    <% if user_signed_in? %>
+      <li><%= link_to "Bookings", bookings_path %></li>
+      <% if current_user.admin? %>
+        <li><%= link_to "Dashboard", admin_dashboard_path, class: "admin-link" %></li>
+      <% end %>
+       <li style="color: gold;  font-weight: bold;">Logged in as: <%= current_user.email %></li>
+      <li>
+        <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "logout-button" %>
+      </li>
+    <% else %>
+      <li><%= link_to "Login", new_user_session_path %></li>
+    <% end %>
+  </ul>
+  <!-- Search Form Container -->
+  <div class="search-form-container">
+    <form method="get" class="search-form">
+      <!-- Location Dropdown -->
+      <label for="location" class="search-label">Select Location:</label>
+      <select name="location" id="location" class="search-dropdown">
+        <option value="">All Locations</option>
+        <% ["Hyderabad", "Bangalore", "Mumbai", "Chennai"].each do |loc| %>
+          <option value="<%= loc %>" <%= "selected" if params[:location] == loc %>><%= loc %></option>
+        <% end %>
+      </select>
+  
+      <button type="submit" class="search-button">Search</button>
+    </form>
+  </div>
+
+</nav>
+</header>
+
+
+    <div class="container">
+      <%= yield %>
+    </div>
+  
+</body>
+</html>
+
+
+<style>
+/* Centering the Search Form */
+.search-form-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+  height: 55px;
+
+}
+
+/* Form Layout */
+.search-form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #222;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+/* Label Styling */
+.search-label {
+  color: white;
+  font-weight: bold;
+}
+
+/* Dropdown Styling */
+.search-dropdown {
+  padding: 8px;
+  width: 200px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+/* Small Search Button */
+.search-button {
+  background-color: #ffcc00;
+  color: black;
+  font-weight: bold;
+  border: none;
+  padding: 5px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: auto; /* Ensures it doesn't stretch */
+}
+
+.search-button:hover {
+  background-color: #ffdd44;
+}
+
+
+</style>

@@ -1,0 +1,9 @@
+<h1 class="booking-title">Book a Vehicle</h1>
+
+<div class="booking-container">
+  <%= render "form", booking: @booking %>
+</div>
+<br>
+<div class="booking-back-link">
+  <%= link_to "Back to Bookings", bookings_path, class: "btn btn-secondary custom-back-button" %>
+</div>

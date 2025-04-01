@@ -1,0 +1,100 @@
+<div class="booking-table-container">
+  <table class="booking-table">
+    <thead>
+      <tr>
+        <th>User</th>
+        <th>Email</th> <!-- New Column -->
+        <th>Vehicle</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Total Price</th>
+        <th>Phone Number</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr id="<%= dom_id booking %>">
+        <td><span class="booking-value"><%= booking.user_id %></span></td>
+        <td><span class="booking-value"><%= booking.user.email %></span></td>
+        <td><span class="booking-value"><%= booking.vehicle_id %></span></td>
+        <td><span class="booking-value"><%= booking.start_date %></span></td>
+        <td><span class="booking-value"><%= booking.end_date %></span></td>
+        <td><span class="booking-price">₹<%= booking.total_price %></span></td>
+        <td><span class="booking-value"><%= booking.phone_number%></span></td>
+        <td>
+          <span class="booking-status <%= booking.status.present? ? booking.status.downcase : 'pending' %>">
+            <%= booking.status || "Pending" %>
+          </span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+
+
+<style>
+  .booking-table-container {
+    width: 100%;
+    overflow-x: auto; /* Enables horizontal scrolling for small screens */
+    margin-top: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    height: 100px;
+  }
+
+  .booking-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+   
+  }
+
+  .booking-table thead {
+    background: #000; /* Changed to black */
+    color: white;
+    position: sticky;
+    top: 0;
+  }
+
+  .booking-table th, .booking-table td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .booking-table tbody tr:hover {
+    background: #f1f1f1;
+  }
+
+  .booking-status {
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-weight: bold;
+  }
+
+  .booking-status.pending {
+    background: #ffcc00;
+    color: #fff;
+  }
+
+  .booking-status.accepted {
+    background: #28a745;
+    color: white;
+  }
+
+  .booking-status.rejected {
+    background: #dc3545;
+    color: white;
+  }
+
+  .booking-value {
+    font-weight: 500;
+  }
+
+  .booking-price {
+    font-weight: bold;
+    color: #28a745;
+  }
+</style>

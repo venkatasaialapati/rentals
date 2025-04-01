@@ -1,0 +1,25 @@
+<h2>Booking Rejected</h2>
+
+<p>Hello <%= @user.first_name %>,</p>
+
+<p>Unfortunately, your booking for <strong><%= @booking.vehicle.name %></strong> on <%= @booking.start_date %> has been rejected.</p>
+
+<p>We sincerely apologize for the inconvenience. The vehicle you selected is currently unavailable. Your payment will be refunded shortly.</p>
+
+<p>However, you may consider booking one of these available vehicles instead:</p>
+
+<ul>
+  <li><strong>Toyota Innova</strong> - Spacious and comfortable for family trips</li>
+  <li><strong>Hyundai Creta</strong> - A premium SUV for city and highway travel</li>
+  <li><strong>Maruti Swift</strong> - A budget-friendly and fuel-efficient option</li>
+</ul>
+
+<p>If you prefer not to book another vehicle, you can choose to cancel your previous booking. Your payment will be **fully refunded within 4 days**.</p>
+
+<p><strong>To cancel your booking and process the refund, click the link below:</strong></p>
+
+
+<p>If you need any assistance, feel free to contact our support team.</p>
+
+<p>Best regards,<br>Your Rentals Team</p>
+
